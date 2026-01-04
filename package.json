@@ -1,7 +1,7 @@
 {
-  "name": "discordbot-ts-template",
+  "name": "ezzverse-bot",
   "version": "1.0.0",
-  "description": "Template for an discord bot project with typescript.",
+  "description": "Ezzverse Bot",
   "main": "dist/index.js",
   "scripts": {
     "start": "tsc && node .",
@@ -10,24 +10,26 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Under-scape/discordbot-ts-template.git"
+    "url": "git+https://github.com/RedSavant/Ezzverse-bot.git"
   },
   "keywords": [
     "discordjs",
     "typescript",
     "bot"
   ],
-  "author": "TheDreWen",
+  "author": "RedSavantMC",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Under-scape/discordbot-ts-template/issues"
+    "url": "https://github.com/RedSavant/Ezzverse-bot/issues"
   },
-  "homepage": "https://github.com/Under-scape/discordbot-ts-template#readme",
+  "homepage": "https://github.com/RedSavant/Ezzverse-bot#readme",
   "devDependencies": {
     "typescript": "^5.9.2"
   },
   "dependencies": {
     "discord.js": "^14.25.0",
-    "dotenv": "^17.2.2"
+    "dotenv": "^17.2.3",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
   }
 }
