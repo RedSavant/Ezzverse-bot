@@ -1,3 +1,4 @@
+<p align="center"><img src="https://cdn.discordapp.com/icons/1364562328766517250/305a4c653ff4d8b32550bc89de3b958b.png?size=1024" width="150px" height="150px" alt="aventium softworks"></p>
 # Ezzverse Bot
 
 Le **bot officiel de Ezzverse**, développé en **TypeScript**, permet de gérer la communauté et d’automatiser différentes fonctionnalités sur le serveur Discord d’Ezzverse.  
