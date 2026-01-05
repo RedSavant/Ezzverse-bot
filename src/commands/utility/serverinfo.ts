@@ -80,7 +80,8 @@ const cmd: CommandDefinition = {
             .setFooter({
                 text: `Demande par ${interaction.user.username}`,
                 iconURL: interaction.user.displayAvatarURL({ size: 1024 })
-            });
+            })
+            .setImage(guild.iconURL({ size: 1024 }));
 
         await interaction.reply({
             embeds: [embed]
