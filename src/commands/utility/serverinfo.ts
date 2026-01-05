@@ -1,9 +1,8 @@
 import { 
     ApplicationIntegrationType, 
-    ChatInputCommandInteraction, 
-    ContainerBuilder,
+    ChatInputCommandInteraction,
+    EmbedBuilder,
     InteractionContextType, 
-    MessageFlags,
     SlashCommandBuilder 
 } from "discord.js";
 import { CommandDefinition } from "../../type";
@@ -20,28 +19,71 @@ const cmd: CommandDefinition = {
         ),
     
     async execute(interaction: ChatInputCommandInteraction) {
-        const container = new ContainerBuilder()
-            .addTextDisplayComponents((textDisplay) => 
-                textDisplay.setContent(
-                    `# Information sur le serveur\n\n` +
-                    `**Proprietaire:** ${interaction.guild?.ownerId}\n` +
-                    `**ID du serveur:** <@${interaction.guild?.id}>\n` +
-                    `**Creation:** ${interaction.guild?.createdAt}\n` +
-                    `**Region:** ${interaction.guild?.preferredLocale}\n` +
-                    `**Membres:** ${interaction.guild?.memberCount}, Humains: ${interaction.guild?.members.cache.filter(m => !m.user.bot).size}, Bots: ${interaction.guild?.members.cache.filter(m => m.user.bot).size}\n` +
-                    `**Roles:** ${interaction.guild?.roles.cache.size}\n` +
-                    `**Canaux:** ${interaction.guild?.channels.cache.size}\n` +
-                    `**Boosts:** ${interaction.guild?.premiumSubscriptionCount} (Niveau ${interaction.guild?.premiumTier})`
-                )
+        if (!interaction.guild) {
+            await interaction.reply({
+                content: "Cette commande ne peut être utilisée que dans un serveur.",
+                ephemeral: true
+            });
+            return;
+        }
+
+        await interaction.guild.members.fetch();
+
+        const guild = interaction.guild;
+        const owner = await guild.fetchOwner();
+        
+        const totalMembers = guild.memberCount;
+        const humanMembers = guild.members.cache.filter(m => !m.user.bot).size;
+        const botMembers = guild.members.cache.filter(m => m.user.bot).size;
+
+        const textChannels = guild.channels.cache.filter(c => c.isTextBased()).size;
+        const voiceChannels = guild.channels.cache.filter(c => c.isVoiceBased()).size;
+
+        const createdDate = guild.createdAt.toLocaleDateString('fr-FR');
+
+        const embed = new EmbedBuilder()
+            .setTitle(`Informations : ${guild.name}`)
+            .setThumbnail(guild.iconURL({ size: 1024 }))
+            .setColor(0x5865F2)
+            .addFields(
+                {
+                    name: 'Proprietaire',
+                    value: `<@${owner.id}>`,
+                    inline: true
+                },
+                {
+                    name: 'ID du Serveur',
+                    value: `\`${guild.id}\``,
+                    inline: true
+                },
+                {
+                    name: 'Creation',
+                    value: createdDate,
+                    inline: true
+                },
+                {
+                    name: 'Membres',
+                    value: `Total: **${totalMembers}**\nHumains: **${humanMembers}**\nBots: **${botMembers}**`,
+                    inline: true
+                },
+                {
+                    name: 'Salons',
+                    value: `Texte: **${textChannels}**\nVocaux: **${voiceChannels}**`,
+                    inline: true
+                },
+                {
+                    name: 'Boosts',
+                    value: `Niveau **${guild.premiumTier}**\n**${guild.premiumSubscriptionCount || 0}** Boosts`,
+                    inline: true
+                }
             )
-            .addSeparatorComponents((s) => s)
-            .addTextDisplayComponents((textDisplay) => 
-                textDisplay.setContent(`Demandé par ${interaction.user.username}`)
-            );
+            .setFooter({
+                text: `Demande par ${interaction.user.username}`,
+                iconURL: interaction.user.displayAvatarURL({ size: 1024 })
+            });
 
         await interaction.reply({
-            components: [container],
-            flags: MessageFlags.IsComponentsV2
+            embeds: [embed]
         });
     }
 };
