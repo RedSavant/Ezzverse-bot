@@ -24,4 +24,3 @@ Il offre des outils de modération, des commandes utilitaires, et des intégrati
   ```env
   DISCORD_TOKEN=your_token_here
   CLIENT_ID=your_client_id
-  GUILD_ID=your_guild_id
